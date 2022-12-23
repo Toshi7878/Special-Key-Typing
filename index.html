@@ -1,0 +1,297 @@
+<head>
+	<script src="https://gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+	<script src="https://gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="index.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/all.min.js" integrity="sha512-rpLlll167T5LJHwp0waJCh3ZRf7pO6IT1+LZOhAyP6phAirwchClbTZV3iqL3BMrVxIYRbzGTpli4rfxsCK6Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</head>
+
+<h2>特殊キー/修飾キータイピング (仮)</h2>
+<div id="modal-1" aria-hidden="true" >
+
+	<div class="modal__overlay" tabindex="-1" data-micromodal-close="">
+  
+	  <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+		<header class="modal__header">
+		  <h2 id="modal-1-title" class="modal__title">
+			<span id="event-name"></span>
+			ランキング
+		  </h2>
+		  <button class="modal__close" aria-label="Close modal" data-micromodal-close=""></button>
+		</header>
+		<div id="modal-1-content" class="modal__content">
+			<table id="ranking-table">
+				<tbody>
+						<td>順位</td>
+						<td>名前</td>
+						<td>タイム</td>
+						<td>打/秒</td>
+						<td>ミス数</td>
+				</tbody>
+			</table>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+<div id="result" ></div>
+<div class="d-flex justify-content-between display-6">
+	<div id="status">
+		<div><span id="key">0</span> / 50<span id="length"></span> 打鍵</div>
+		<div><span id="miss">0</span> ミス</div>
+		<div><span id="speed">0.0</span> 打/秒</div>
+	</div>
+	<div id="ranking" class="h1">
+		<button id="ranking-button" data-micromodal-trigger="modal-1" class="btn btn-success">ランキングを見る<i class="fa-solid fa-ranking-star"></i></button>
+	</div>
+</div>
+
+
+<h3>-設定-</h3>
+<form>
+	<button id="retry" class="btn btn-primary">リトライ</button>
+
+
+	<div>
+		<label>
+			<input type="checkbox" id="key-type">打鍵音
+		</label>
+		<label>
+			<input type="checkbox" id="miss-type">ミス音
+		</label>
+	</div>
+	<div id="key-set-option">
+		<select id="word-mode">
+			<option value="majorKeys" data-length="50" data-wordset="majorKeys" selected>よく使用するキー50</option>
+			<option value="free" data-wordset="free">自由練習(ランキング登録不可)</option>
+		</select>
+		<input type="text" id="ranking-name" placeholder="ランキング登録名">
+		<div id="free-key-option" class="d-none">
+			<div id="length">
+				<label>
+					<input type="number" value="50" id="word-length">ワード数
+				</label>
+			</div>
+			<div id="keyboard-layout">
+				<h4>Keyboard Layout</h4>
+				<label>
+					<input name="keyboard" type="radio" value="jis" checked>JIS
+				</label>
+				<label>
+					<input name="keyboard" type="radio" value="us">US
+				</label>
+			</div>
+			<div id="special-keys">
+				<div>
+					<h5>Special Keys</h5>
+					<span id="ctrlKeys">
+						<label>
+							<input type="checkbox" value="BS" checked>BS
+						</label>
+						<label>
+							<input type="checkbox" value="Del" checked>Del
+						</label>
+						<label>
+							<input type="checkbox" value="←" checked>←
+						</label>
+						<label>
+							<input type="checkbox" value="↓" checked>↓
+						</label>
+						<label>
+							<input type="checkbox" value="↑" checked>↑
+						</label>
+						<label>
+							<input type="checkbox" value="→" checked>→
+						</label>
+						<label>
+							<input type="checkbox" value="Home" checked>Home
+						</label>
+						<label>
+							<input type="checkbox" value="End" checked>End
+						</label>
+						<label>
+							<input type="checkbox" value="Enter" checked>Enter
+						</label>
+						<label>
+							<input type="checkbox" value="Pause">Pause
+						</label>
+						<label>
+							<input type="checkbox" value="Ins">Ins
+						</label>
+						<label>
+							<input type="checkbox" value="ScrollLock">ScrollLock
+						</label>
+						<label>
+							<input type="checkbox" value="CapsLock">CapsLock
+						</label>
+						<label>
+							<input type="checkbox" value="ContextMenu">ContextMenu
+						</label>
+					</span>
+					<span id="normalKeys">
+						<label>
+							<input type="checkbox" value="Ctrl" checked>Ctrl
+						</label>
+						<label>
+							<input type="checkbox" value="Alt" checked>Alt
+						</label>
+						<label>
+							<input type="checkbox" value="Tab" checked>Tab
+						</label>
+						<label>
+							<input type="checkbox" value="PgUp" checked>PgUp
+						</label>
+						<label>
+							<input type="checkbox" value="PgDown" checked>PgDown
+						</label>
+					</span>
+				</div>
+				<div id="functionKeys">
+					<h5>Function Keys</h5>
+					<label>
+						<input type="checkbox" value="F1" checked>F1
+					</label>
+					<label>
+						<input type="checkbox" value="F2" checked>F2
+					</label>
+					<label>
+						<input type="checkbox" value="F3" checked>F3
+					</label>
+					<label>
+						<input type="checkbox" value="F4" checked>F4
+					</label>
+					<label>
+						<input type="checkbox" value="F5" checked>F5
+					</label>
+					<label>
+						<input type="checkbox" value="F6" checked>F6
+					</label>
+					<label>
+						<input type="checkbox" value="F7" checked>F7
+					</label>
+					<label>
+						<input type="checkbox" value="F8" checked>F8
+					</label>
+					<label>
+						<input type="checkbox" value="F9" checked>F9
+					</label>
+					<label>
+						<input type="checkbox" value="F10" checked>F10
+					</label>
+					<label>
+						<input type="checkbox" value="F11" checked>F11
+					</label>
+					<label>
+						<input type="checkbox" value="F12" checked>F12
+					</label>
+				</div>
+				<div id="jisKeys">
+					<h5>JIS Keyboard Keys</h5>
+					<label>
+						<input type="checkbox" value="無変換" checked>無変換
+					</label>
+					<label>
+						<input type="checkbox" value="変換" checked>変換
+					</label>
+					<label>
+						<input type="checkbox" value="Kana" checked>Kana
+					</label>
+				</div>
+				<div id="ctrlAlphabetKeys">
+					<h5>Ctrl Alphabet Keys</h5>
+					<label>
+						<input type="checkbox" value="Shift" checked>Shift
+					</label>
+					<label>
+						<input type="checkbox" value="A" checked>A
+					</label>
+					<label>
+						<input type="checkbox" value="B" checked>B
+					</label>
+					<label>
+						<input type="checkbox" value="C" checked>C
+					</label>
+					<label>
+						<input type="checkbox" value="D" checked>D
+					</label>
+					<label>
+						<input type="checkbox" value="E" checked>E
+					</label>
+					<label>
+						<input type="checkbox" value="E" checked>F
+					</label>
+					<label>
+						<input type="checkbox" value="G" checked>G
+					</label>
+					<label>
+						<input type="checkbox" value="H" checked>H
+					</label>
+					<label>
+						<input type="checkbox" value="J" checked>J
+					</label>
+					<label>
+						<input type="checkbox" value="K" checked>K
+					</label>
+					<label>
+						<input type="checkbox" value="L" checked>L
+					</label>
+					<label>
+						<input type="checkbox" value="M" checked>M
+					</label>
+					<label>
+						<input type="checkbox" value="N" checked>N
+					</label>
+					<label>
+						<input type="checkbox" value="O" checked>O
+					</label>
+					<label>
+						<input type="checkbox" value="P" checked>P
+					</label>
+					<label>
+						<input type="checkbox" value="Q" checked>Q
+					</label>
+					<label>
+						<input type="checkbox" value="R" checked>R
+					</label>
+					<label>
+						<input type="checkbox" value="S" checked>S
+					</label>
+					<label>
+						<input type="checkbox" value="T" checked>T
+					</label>
+					<label>
+						<input type="checkbox" value="U" checked>U
+					</label>
+					<label>
+						<input type="checkbox" value="V" checked>V
+					</label>
+					<label>
+						<input type="checkbox" value="X" checked>X
+					</label>
+					<label>
+						<input type="checkbox" value="Y" checked>Y
+					</label>
+					<label>
+						<input type="checkbox" value="Z" checked>Z
+					</label>
+				</div>
+			</div>
+</form>
+<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+<script src="word-set.js"></script>
+<script src="special-key-typing.js"></script>
+<script src="ranking-display.js"></script>
+<script src="sound-effect.js"></script>
+<script src="firebase-login.js"></script>
+<script src="access-indexed-db.js"></script>
+
+
+</div>

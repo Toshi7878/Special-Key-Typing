@@ -1,0 +1,30 @@
+#result{
+    font-weight:bold;
+      padding:1rem;
+    border:solid;
+    white-space: nowrap;
+    overflow: hidden;
+font-size:1.4rem;
+}
+#retry{
+font-size:1.4rem;
+}
+.gold{
+color:gold;
+}
+#word-length{
+width:4rem;
+}
+.separator{
+  opacity:0.3;
+}
+form > *{
+margin-bottom:1rem;
+}
+body{
+  margin:1rem!important;
+}
+#ranking-button{
+  margin: 1rem;
+  font-size:1.2rem;
+}
