@@ -61,7 +61,7 @@ class WordSet {
 			"F12"
 		]
 		this.shiftKey = false
-		this.words = this.specialKeys.concat(this.normalKeys)
+		this.words = this.specialKeys.concat(this.normalKeys).concat(this.functionKeys)
 	}
 
 

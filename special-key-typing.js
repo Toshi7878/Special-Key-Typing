@@ -60,7 +60,7 @@ class Option {
 
 
   wordModeChange(event) {
-    if (event.target.value == "free") {
+    if (event.target.selectedOptions[0].dataset.wordset == "free") {
       document.getElementById("free-key-option").classList.remove("d-none");
       document.getElementById("ranking-button").classList.add("d-none");
       document.getElementById("ranking-name").classList.add("d-none");
@@ -70,8 +70,7 @@ class Option {
       document.getElementById("ranking-name").classList.remove("d-none");
     }
     this.wordMode = event.target.value
-    createWord[document.querySelector("#word-mode [selected]").dataset.wordset]()
-    createWord.word()
+    Reset(this.wordMode)
   }
 }
 Option.loadOption()
@@ -125,7 +124,7 @@ class CreateWord extends WordSet {
     if (document.querySelector("input[name=keyboard]:checked").value == "jis") {
       this.normalKeys = this.jisKeys.concat(this.normalKeys)
     }
-    this.words = this.ctrlKeys.concat(this.normalKeys)
+    this.words = this.ctrlKeys.concat(this.normalKeys).concat(this.functionKeys)
   }
   word() {
     const len = option.wordMode == "free" ? document.getElementById("word-length").value : document.querySelector("#word-mode [selected]").dataset.length
@@ -210,7 +209,7 @@ class KeyType {
       } else if (event.altKey && result.firstChild.id == "Alt-key") {
         document.getElementById("Alt-key").classList.add("gold")
       }
-      if (event.shiftKey && (result.children[1].id == "Shift-key" || result.children[0].id == "Shift-key")) {
+      if (event.shiftKey && (result.children[0].id == "Shift-key" || result.children[1].id == "Shift-key")) {
         document.getElementById("Shift-key").classList.add("gold")
       }
     }
@@ -275,7 +274,7 @@ class KeyType {
       } else if (!event.altKey && result.firstChild.id == "Alt-key") {
         document.getElementById("Alt-key").classList.remove("gold")
       }
-      if (!event.shiftKey && result.children[1].id == "Shift-key") {
+      if (!event.shiftKey && (result.children[0].id == "Shift-key" || result.children[1].id == "Shift-key")) {
         document.getElementById("Shift-key").classList.remove("gold")
       }
     }
