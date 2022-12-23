@@ -76,12 +76,12 @@ class Option {
 Option.loadOption()
 
 let option = new Option()
-document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate)
-document.getElementById("word-length").addEventListener("change", option.wordLengthUpdate)
-document.getElementById("special-keys").addEventListener("change", option.enableKeyUpdate)
+document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate.bind(option))
+document.getElementById("word-length").addEventListener("change", option.wordLengthUpdate.bind(option))
+document.getElementById("special-keys").addEventListener("change", option.enableKeyUpdate.bind(option))
 document.getElementById("key-type").addEventListener("change", option.keyTypeUpdate)
 document.getElementById("miss-type").addEventListener("change", option.missTypeUpdate)
-document.getElementById("word-mode").addEventListener("change", option.wordModeChange)
+document.getElementById("word-mode").addEventListener("change", option.wordModeChange.bind(option))
 document.getElementById("ranking-name").addEventListener("change", option.rankingNameUpdate)
 class CreateWord extends WordSet {
 
