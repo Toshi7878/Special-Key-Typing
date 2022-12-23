@@ -210,7 +210,7 @@ class KeyType {
       } else if (event.altKey && result.firstChild.id == "Alt-key") {
         document.getElementById("Alt-key").classList.add("gold")
       }
-      if (event.shiftKey && (result.children[1].id == "Shift-key" || result.children[0].id == "Shift-key")) {
+      if (event.shiftKey && (result.children[0].id == "Shift-key" || result.children[1].id == "Shift-key")) {
         document.getElementById("Shift-key").classList.add("gold")
       }
     }
@@ -275,7 +275,7 @@ class KeyType {
       } else if (!event.altKey && result.firstChild.id == "Alt-key") {
         document.getElementById("Alt-key").classList.remove("gold")
       }
-      if (!event.shiftKey && result.children[1].id == "Shift-key") {
+      if (!event.shiftKey && (result.children[0].id == "Shift-key" || result.children[1].id == "Shift-key")) {
         document.getElementById("Shift-key").classList.remove("gold")
       }
     }
