@@ -260,3 +260,7 @@ th {
 .fa-square-twitter{
   color:#1d9bf0;
 }
+
+#twitter-button:hover .fa-square-twitter{
+  color:#f8f9fa;  
+}
