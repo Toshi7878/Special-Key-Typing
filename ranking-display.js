@@ -15,11 +15,13 @@ class RankingDisplay{
 						<td>ミス数</td>
 				</tbody>
 			</table>`)
+			document.getElementById("event-name").insertAdjacentHTML("beforeend",
+			`<span name="${option.wordMode}"></span>`)
 				rankingDisplay[option.wordMode] = Object.values(rankingData.val())
 				rankingDisplay[option.wordMode] = rankingDisplay[option.wordMode].sort(function(a, b) {
 					return (a.clearTime < b.clearTime) ? -1 : 1;  //オブジェクトの昇順ソート
 				  });
-				  document.getElementById("event-name").textContent = document.querySelector("#word-mode [selected]").textContent
+				  document.getElementById("event-name").querySelector(`[name=${option.wordMode}]`).textContent = document.querySelector("#word-mode").selectedOptions[0].textContent
 				  for(let i=0;i<this[option.wordMode].length;i++){
 					this.addRankingTable(this[option.wordMode][i],i)
 				}

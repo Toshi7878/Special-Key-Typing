@@ -80,10 +80,13 @@ class Option {
 	  this.wordMode = event.target.selectedOptions[0].dataset.wordset
 	  const RANKING_TABLES = document.getElementsByClassName("ranking")
 	  for(let i=0;i<RANKING_TABLES.length;i++){
-		  if(RANKING_TABLES[i].name == this.wordMode){
+		const NAME = RANKING_TABLES[i].getAttribute("name")
+		  if(NAME == this.wordMode){
 			RANKING_TABLES[i].classList.remove("d-none")
+			document.getElementById("event-name").querySelector(`[name=${NAME}]`).classList.remove("d-none")
 		  }else{
 			RANKING_TABLES[i].classList.add("d-none")
+			document.getElementById("event-name").querySelector(`[name=${NAME}]`).classList.add("d-none")
 		  }
 	  }
 	  Reset(this.wordMode)
