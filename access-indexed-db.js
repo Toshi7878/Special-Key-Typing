@@ -17,10 +17,35 @@ const STORE_KEYPATH = ["filterKey"];
 	//データベースストアアクセス成功時。
 	OPEN_REQUEST.onsuccess = function(event) {
 		db = event.target.result;
-  getAllIndexeddbData()
+  		getAllIndexeddbData()
 	}
 })();
 
+
+function getAllIndexeddbData() {
+	//トランザクション
+	var transaction = db.transaction(STORE_KEYPATH, 'readonly');
+	//オブジェクトストアにアクセスします。
+	var listObjectStore = transaction.objectStore(STORE_KEYPATH[0]);
+	//全件取得
+	var listRequest = listObjectStore.getAllKeys()
+	//取得が成功した場合の関数宣言
+	listRequest.onsuccess = function (event) {
+	  const result = event.currentTarget.result
+	  for (let i = 0; i < result.length; i++) {
+		const CHECKBOX = document.querySelector(`[value=${result[i]}]`)
+		CHECKBOX.checked = !CHECKBOX.checked;
+		if (result[i] == "Ctrl") {
+		  document.getElementById("ctrlAlphabetKeys").style.display = "none";
+		  document.querySelector("[value=Shift]").parentElement.style.display = "none";
+  
+		}
+	  }
+	  createWord = new CreateWord()
+	  createWord[document.querySelector("#word-mode [selected]").dataset.wordset]()
+	  createWord.word()
+	};
+  }
 
 //データを保存
 function putOptionSaveData(keyPath,Data){

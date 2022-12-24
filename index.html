@@ -69,7 +69,7 @@
 	<button id="retry" class="btn btn-primary">リトライ</button>
 
 
-	<div>
+	<div id="key-se">
 		<label>
 			<input type="checkbox" id="key-type">打鍵音
 		</label>
@@ -83,14 +83,15 @@
 			<option value="free" data-wordset="free">自由練習(ランキング登録不可)</option>
 		</select>
 		<input type="text" id="ranking-name" placeholder="ランキング登録名">
+		<div><label><input type="checkbox" id="auto-submit">ランキング自動登録</label></div>
 		<div id="free-key-option" class="d-none">
-			<div id="length">
+			<div id="length" class="mt-4">
 				<label>
 					<input type="number" value="50" id="word-length">ワード数
 				</label>
 			</div>
-			<div id="keyboard-layout">
-				<h4>Keyboard Layout</h4>
+			<div id="keyboard-layout" class="mt-4">
+				<h4>キーボードレイアウト</h4>
 				<label>
 					<input name="keyboard" type="radio" value="jis" checked>JIS
 				</label>
@@ -98,10 +99,10 @@
 					<input name="keyboard" type="radio" value="us">US
 				</label>
 			</div>
-			<div id="special-keys">
-				<div>
-					<h5>Special Keys</h5>
-					<span id="ctrlKeys">
+			<div id="special-keys" >
+				<div class="mt-4">
+					<h5>特殊キー</h5>
+					<span id="ctrlKeys" >
 						<label>
 							<input type="checkbox" value="BS" checked>BS
 						</label>
@@ -130,19 +131,19 @@
 							<input type="checkbox" value="Enter" checked>Enter
 						</label>
 						<label>
-							<input type="checkbox" value="Pause">Pause
+							<input type="checkbox" value="Pause" data-defalt-disabled="true">Pause
 						</label>
 						<label>
-							<input type="checkbox" value="Ins">Ins
+							<input type="checkbox" value="Ins" data-defalt-disabled="true">Ins
 						</label>
 						<label>
-							<input type="checkbox" value="ScrollLock">ScrollLock
+							<input type="checkbox" value="ScrollLock" data-defalt-disabled="true">ScrollLock
 						</label>
 						<label>
-							<input type="checkbox" value="CapsLock">CapsLock
+							<input type="checkbox" value="CapsLock" data-defalt-disabled="true">CapsLock
 						</label>
 						<label>
-							<input type="checkbox" value="ContextMenu">ContextMenu
+							<input type="checkbox" value="ContextMenu" data-defalt-disabled="true">ContextMenu
 						</label>
 					</span>
 					<span id="normalKeys">
@@ -163,8 +164,8 @@
 						</label>
 					</span>
 				</div>
-				<div id="functionKeys">
-					<h5>Function Keys</h5>
+				<div id="functionKeys" class="mt-4">
+					<h5>ファンクションキー</h5>
 					<label>
 						<input type="checkbox" value="F1" checked>F1
 					</label>
@@ -202,8 +203,8 @@
 						<input type="checkbox" value="F12" checked>F12
 					</label>
 				</div>
-				<div id="jisKeys">
-					<h5>JIS Keyboard Keys</h5>
+				<div id="jisKeys" class="mt-4">
+					<h5>JISキー</h5>
 					<label>
 						<input type="checkbox" value="無変換" checked>無変換
 					</label>
@@ -214,8 +215,8 @@
 						<input type="checkbox" value="Kana" checked>Kana
 					</label>
 				</div>
-				<div id="ctrlAlphabetKeys">
-					<h5>Ctrl Alphabet Keys</h5>
+				<div id="ctrlAlphabetKeys" class="mt-4">
+					<h5>Ctrlアルファベットキー</h5>
 					<label>
 						<input type="checkbox" value="Shift" checked>Shift
 					</label>
@@ -242,6 +243,9 @@
 					</label>
 					<label>
 						<input type="checkbox" value="H" checked>H
+					</label>
+					<label>
+						<input type="checkbox" value="I" disabled>I
 					</label>
 					<label>
 						<input type="checkbox" value="J" checked>J
@@ -274,13 +278,16 @@
 						<input type="checkbox" value="S" checked>S
 					</label>
 					<label>
-						<input type="checkbox" value="T" checked>T
+						<input type="checkbox" value="T" disabled>T
 					</label>
 					<label>
 						<input type="checkbox" value="U" checked>U
 					</label>
 					<label>
 						<input type="checkbox" value="V" checked>V
+					</label>
+					<label>
+						<input type="checkbox" value="W" disabled>W
 					</label>
 					<label>
 						<input type="checkbox" value="X" checked>X
@@ -293,9 +300,12 @@
 					</label>
 				</div>
 			</div>
+			</div>
 </form>
 <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
 <script src="word-set.js"></script>
+<script src="option.js"></script>
+<script src="create-word.js"></script>
 <script src="special-key-typing.js"></script>
 <script src="ranking-display.js"></script>
 <script src="sound-effect.js"></script>

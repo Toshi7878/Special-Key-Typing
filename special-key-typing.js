@@ -1,190 +1,5 @@
 const separator = `<span class="separator">_</span>`
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-class Option {
-  constructor() {
-    this.wordMode = "majorKeys"
-  }
-  static loadOption() {
-    const W_LENGTH = sessionStorage.getItem("word-length")
-    if (W_LENGTH) {
-      document.getElementById("word-length").value = W_LENGTH
-      document.getElementById("length").textContent = W_LENGTH
-    }
-    const KEYBOARD = sessionStorage.getItem("keyboard")
-    if (KEYBOARD == "us") {
-      document.getElementsByName("keyboard")[1].checked = true;
-      document.getElementById("jisKeys").style.display = "none";
-    }
-    document.getElementById("ranking-name").value = localStorage.getItem("ranking-name") ? localStorage.getItem("ranking-name") : ""
-  }
-
-  wordLengthUpdate(event) {
-    sessionStorage.setItem(event.target.id, event.target.value)
-    document.getElementById("length").textContent = event.target.value
-    Reset(this.wordMode)
-  }
-
-  rankingNameUpdate(event) {
-    localStorage.setItem(event.target.id, event.target.value)
-  }
-  keyboardUpdate(event) {
-    sessionStorage.setItem(event.target.name, event.target.value)
-    document.getElementById("jisKeys").style.display = event.target.value == "us" ? "none" : "";
-    Reset(this.wordMode)
-  }
-
-  enableKeyUpdate(event) {
-    event.target.checked ? deleteIndexedDB(event.target.value) : putOptionSaveData(0, event.target.value);
-    if (event.target.value == "Ctrl") {
-      document.getElementById("ctrlAlphabetKeys").style.display = event.target.checked ? "" : "none";
-      document.querySelector("[value=Shift]").parentElement.style.display = event.target.checked ? "" : "none";
-
-    }
-    Reset(this.wordMode)
-  }
-
-  keyTypeUpdate(event) {
-    if (event.target.checked) {
-      se.keyTypePlay()
-    }
-  }
-  missTypeUpdate(event) {
-    if (event.target.checked) {
-      se.missTypePlay()
-    }
-  }
-
-
-  wordModeChange(event) {
-    if (event.target.selectedOptions[0].dataset.wordset == "free") {
-      document.getElementById("free-key-option").classList.remove("d-none");
-      document.getElementById("ranking-button").classList.add("d-none");
-      document.getElementById("ranking-name").classList.add("d-none");
-    } else {
-      document.getElementById("free-key-option").classList.add("d-none");
-      document.getElementById("ranking-button").classList.remove("d-none");
-      document.getElementById("ranking-name").classList.remove("d-none");
-    }
-    this.wordMode = event.target.selectedOptions[0].dataset.wordset
-    Reset(this.wordMode)
-  }
-}
-Option.loadOption()
-
-let option = new Option()
-document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate.bind(option))
-document.getElementById("word-length").addEventListener("change", option.wordLengthUpdate.bind(option))
-document.getElementById("special-keys").addEventListener("change", option.enableKeyUpdate.bind(option))
-document.getElementById("key-type").addEventListener("change", option.keyTypeUpdate)
-document.getElementById("miss-type").addEventListener("change", option.missTypeUpdate)
-document.getElementById("word-mode").addEventListener("change", option.wordModeChange.bind(option))
-document.getElementById("ranking-name").addEventListener("change", option.rankingNameUpdate)
-class CreateWord extends WordSet {
-
-  constructor() {
-    super();
-    this.keyOptionId = ["ctrlKeys", "normalKeys", "functionKeys", "jisKeys", "ctrlAlphabetKeys"]
-
-    this.ctrlKeys = []
-    this.ctrlAlphabetKeys = [] //"T","W","N"
-    this.normalKeys = []
-    this.jisKeys = []
-    this.functionKeys = []
-    this.modify = ['Control', 'Shift', 'Alt']
-    this.keyReName = {
-      'Insert': 'Ins',
-      'Delete': 'Del',
-      'PageUp': 'PgUp',
-      'PageDown': 'PgDown',
-      'ArrowUp': '↑',
-      'ArrowDown': '↓',
-      'ArrowLeft': '←',
-      'ArrowRight': '→',
-      'NonConvert': '無変換',
-      'Convert': '変換',
-      'Backspace': 'BS',
-      'KanaMode': 'Kana',
-      'Romaji': 'Kana',
-      'Alphanumeric': 'CapsLock',
-      'Hiragana': 'Kana'
-    }
-    this.displayWords = []
-  }
-  free() {
-    for (let i = 0; i < this.keyOptionId.length; i++) {
-      Array.from(document.querySelectorAll(`#${this.keyOptionId[i]} input:checked:not([value=Shift])`)).forEach((input) => {
-        this[this.keyOptionId[i]].push(input.value)
-      })
-    }
-    this["shiftkey"] = document.querySelector("[value=Shift]").checked
-    if (document.querySelector("input[name=keyboard]:checked").value == "jis") {
-      this.normalKeys = this.jisKeys.concat(this.normalKeys)
-    }
-    this.words = this.ctrlKeys.concat(this.normalKeys).concat(this.functionKeys)
-  }
-  word() {
-    const len = option.wordMode == "free" ? document.getElementById("word-length").value : document.querySelector("#word-mode [selected]").dataset.length
-    for (let i = 0; i < len; i++) {
-      this.w = this.words[getRandomInt(this.words.length)]
-
-      if (this.w == 'Ctrl') {
-        this.w = this.w.replace(/(Ctrl|Alt|Shift)/, '<span id="$1-key">$1 + </span>')
-        if (this.ctrlKeys.length && Math.random() < 0.5) {
-          this.addModifyWords()
-        } else if (this.ctrlAlphabetKeys.length) {
-          this.addctrlAlphabetKeys()
-        }
-      } else if (this.w == 'Alt') {
-        if (this.jisKeys.includes("Kana") && Math.random() < 0.5) {
-          this.displayWords.push(['<span id="Alt-key">Alt + </span>', 'Kana']);
-        } else {
-          this.displayWords.push('Alt');
-        }
-
-      } else if (this.w == 'Shift') {
-        this.addShiftKeys()
-      } else {
-        this.displayWords.push(this.w);
-      }
-    }
-    wordUpdate()
-  }
-  addModifyWords() {
-    if (this.shiftKey && Math.random() < 0.5) {
-      const shift = '<span id="Shift-key">Shift + </span>'
-      this.displayWords.push([this.w, shift, this.ctrlKeys[getRandomInt(this.ctrlKeys.length)]]);
-    } else {
-      this.displayWords.push([this.w, this.ctrlKeys[getRandomInt(this.ctrlKeys.length)]]);
-    }
-  }
-
-  addctrlAlphabetKeys() {
-    if (this.shiftKey && Math.random() < 0.5) {
-      const shift = '<span id="Shift-key">Shift + </span>'
-      this.displayWords.push([this.w, shift, this.ctrlAlphabetKeys[getRandomInt(this.ctrlAlphabetKeys.length)]]);
-    } else {
-      this.displayWords.push([this.w, this.ctrlAlphabetKeys[getRandomInt(this.ctrlAlphabetKeys.length)]]);
-    }
-  }
-
-  addShiftKeys(){
-    const shift = '<span id="Shift-key">Shift + </span>'
-    this.displayWords.push([shift, this.shiftKeys[getRandomInt(this.shiftKeys.length)]]);
-  }
-}
-
-let createWord
-
-
-
-function wordUpdate() {
-  document.getElementById("result").innerHTML = `${createWord.displayWords.slice(0,25).join(separator).replace(/,/g,"")}`
-}
-
 
 class KeyType {
   constructor() {
@@ -254,10 +69,16 @@ class KeyType {
             }
             
             if(!userData.val() || userData.val().clearTime > keyType.clearTime){
-              document.getElementById("result").innerHTML = `お疲れ様でした。
-              <button id="submit-button" class="btn btn-warning">ランキングに登録</button>`
-              document.getElementById("time").parentElement.classList.add("text-success")
-              document.getElementById("submit-button").addEventListener("click",keyType.sendRankingData.bind(keyType))
+							document.getElementById("time").parentElement.classList.add("text-success")
+							if(document.getElementById("auto-submit").checked){
+								document.getElementById("result").innerHTML = `お疲れ様でした。
+								<button id="submit-button" class="btn btn-warning" disabled>ランキングに登録しました</button>`
+								keyType.sendRankingData()
+							}else{
+								document.getElementById("result").innerHTML = `お疲れ様でした。
+								<button id="submit-button" class="btn btn-warning">ランキングに登録</button>`
+								document.getElementById("submit-button").addEventListener("click",keyType.sendRankingData.bind(keyType))
+							}
             }else{
               document.getElementById("result").textContent = `お疲れ様でした。`
             }
@@ -267,7 +88,7 @@ class KeyType {
         }
       }
         
-    } else if(!createWord.modify.includes(event.key)){
+    } else if(!createWord.modify.includes(event.key) && this.typeCount >= 1){
       this.missCount++
       document.getElementById("miss").textContent = this.missCount
       if (se && document.getElementById("miss-type").checked == true) {
@@ -323,46 +144,22 @@ retry.addEventListener('click', e => {
 })
 
 
+		function wordUpdate() {
+			document.getElementById("result").innerHTML = `${createWord.displayWords.slice(0,25).join(separator).replace(/,/g,"")}`
+		}
 
 
-function Reset(wordMode) {
-  document.getElementById("ranking-data").classList.add("invisible")
-  document.getElementById("time").parentElement.classList.add("invisible")
-  document.getElementById("time").parentElement.classList.remove("text-success")
-  createWord = new CreateWord()
-  createWord[wordMode]()
-  createWord.word()
-  keyType.typeCount = 0;
-  keyType.missCount = 0;
-  keyType.keySec = 0;
-  document.getElementById("key").textContent = 0
-  document.getElementById("speed").textContent = "0.0"
-  document.getElementById("miss").textContent = 0
-}
-
-
-
-
-function getAllIndexeddbData() {
-  //トランザクション
-  var transaction = db.transaction(STORE_KEYPATH, 'readonly');
-  //オブジェクトストアにアクセスします。
-  var listObjectStore = transaction.objectStore(STORE_KEYPATH[0]);
-  //全件取得
-  var listRequest = listObjectStore.getAllKeys()
-  //取得が成功した場合の関数宣言
-  listRequest.onsuccess = function (event) {
-    const result = event.currentTarget.result
-    for (let i = 0; i < result.length; i++) {
-      document.querySelector(`[value=${result[i]}]`).checked = false;
-      if (result[i] == "Ctrl") {
-        document.getElementById("ctrlAlphabetKeys").style.display = "none";
-        document.querySelector("[value=Shift]").parentElement.style.display = "none";
-
-      }
-    }
-    createWord = new CreateWord()
-    createWord[document.querySelector("#word-mode [selected]").dataset.wordset]()
-    createWord.word()
-  };
-}
+	function Reset(wordMode) {
+		document.getElementById("ranking-data").classList.add("invisible")
+		document.getElementById("time").parentElement.classList.add("invisible")
+		document.getElementById("time").parentElement.classList.remove("text-success")
+		createWord = new CreateWord()
+		createWord[wordMode]()
+		createWord.word()
+		keyType.typeCount = 0;
+		keyType.missCount = 0;
+		keyType.keySec = 0;
+		document.getElementById("key").textContent = 0
+		document.getElementById("speed").textContent = "0.0"
+		document.getElementById("miss").textContent = 0
+	}
