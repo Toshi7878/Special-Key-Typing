@@ -256,7 +256,7 @@ class KeyType {
             if(!userData.val() || userData.val().clearTime > keyType.clearTime){
               document.getElementById("result").innerHTML = `お疲れ様でした。
               <button id="submit-button" class="btn btn-warning">ランキングに登録</button>`
-              document.getElementById("time").classList.add("text-success")
+              document.getElementById("time").parentElement.classList.add("text-success")
               document.getElementById("submit-button").addEventListener("click",keyType.sendRankingData.bind(keyType))
             }else{
               document.getElementById("result").textContent = `お疲れ様でした。`
@@ -328,6 +328,7 @@ retry.addEventListener('click', e => {
 function Reset(wordMode) {
   document.getElementById("ranking-data").classList.add("invisible")
   document.getElementById("time").parentElement.classList.add("invisible")
+  document.getElementById("time").parentElement.classList.remove("text-success")
   createWord = new CreateWord()
   createWord[wordMode]()
   createWord.word()
