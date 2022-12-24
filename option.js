@@ -20,6 +20,15 @@ class Option {
 	  document.getElementById("auto-submit").checked = localStorage.getItem("auto-submit") == "true" ? true : false;
 	  document.getElementById("key-type").checked = localStorage.getItem("key-type") == "true" ? true : false;
 	  document.getElementById("miss-type").checked = localStorage.getItem("miss-type") == "true" ? true : false;
+	  if(location.search.slice(1)){
+		const OPTIONS = document.getElementsByTagName("option")[0]
+		for(let i=0;i<OPTIONS.length;i++){
+			if(OPTIONS[i].dataset.wordset == location.search.slice(1)){
+				document.getElementById("word-mode").options[i].selected = true;
+				this.wordMode = location.search.slice(1)
+			}
+		}
+	  }
 	  }
   
 	wordLengthUpdate(event) {
@@ -115,9 +124,9 @@ class Option {
 		event.preventDefault();
 	}
   }
-
-  Option.loadOption()
   let option = new Option()
+  Option.loadOption()
+
 
   document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate.bind(option))
   document.getElementById("word-length").addEventListener("change", option.wordLengthUpdate.bind(option))
