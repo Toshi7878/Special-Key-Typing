@@ -5,7 +5,7 @@ class Option {
 	constructor() {
 	  this.wordMode = "majorKeys"
 	}
-	static loadOption() {
+	  loadOption() {
 	  const W_LENGTH = sessionStorage.getItem("word-length")
 	  if (W_LENGTH) {
 		document.getElementById("word-length").value = W_LENGTH
@@ -125,7 +125,7 @@ class Option {
 	}
   }
   let option = new Option()
-  Option.loadOption()
+  option.loadOption()
 
 
   document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate.bind(option))
