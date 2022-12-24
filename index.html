@@ -27,15 +27,7 @@
 		  <button class="modal__close" aria-label="Close modal" data-micromodal-close=""></button>
 		</header>
 		<div id="modal-1-content" class="modal__content">
-			<table id="ranking-table">
-				<tbody>
-						<td>順位</td>
-						<td>名前</td>
-						<td>タイム</td>
-						<td>打/秒</td>
-						<td>ミス数</td>
-				</tbody>
-			</table>
+
 		</div>
 	  </div>
 	</div>
@@ -66,12 +58,22 @@
 	<button id="retry" class="btn btn-primary">リトライ</button>
 </div>
 
+<div id="event-option" class="mt-4">
+	<h3 class="mt-4">種目</h3>
+	<select id="word-mode" class="mt-4">
+		<option data-length="50" data-wordset="majorKeys" selected>よく使用するキー (Fキー有り)50</option>
+		<option data-length="50" data-wordset="notFunctionKey">よく使用するキー (Fキー無し)50</option>
+		<option data-wordset="free">自由練習(ランキング登録不可)</option>
+	</select>
+	<input type="text" id="ranking-name" placeholder="ランキング登録名">
+</div>
+
 <h3 class="mt-4">-設定-</h3>
 <div>
 
 
 
-	<div id="key-se">
+	<div id="key-se" class="mt-4">
 		<label>
 			<input type="checkbox" id="key-type">打鍵音
 		</label>
@@ -79,13 +81,10 @@
 			<input type="checkbox" id="miss-type">ミス音
 		</label>
 	</div>
+
+	<div><label><input type="checkbox" id="auto-submit" class="mt-4">ランキング自動登録</label></div>
+
 	<div id="key-set-option">
-		<select id="word-mode">
-			<option value="majorKeys" data-length="50" data-wordset="majorKeys" selected>よく使用するキー50</option>
-			<option value="free" data-wordset="free">自由練習(ランキング登録不可)</option>
-		</select>
-		<input type="text" id="ranking-name" placeholder="ランキング登録名">
-		<div><label><input type="checkbox" id="auto-submit">ランキング自動登録</label></div>
 		<div id="free-key-option" class="d-none">
 			<div id="length" class="mt-4">
 				<label>

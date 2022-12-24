@@ -1,19 +1,27 @@
 class RankingDisplay{
 	constructor(){
-		this.timeRanking
 	}
 
 	loadRankingData(event){
-		if(!this.timeRanking){
+		if(!this[option.wordMode]){
 			firebase.database().ref('ranking/'+ option.wordMode).once('value').then(rankingData => {
-
-				rankingDisplay.timeRanking = Object.values(rankingData.val())
-				rankingDisplay.timeRanking = rankingDisplay.timeRanking.sort(function(a, b) {
+				document.getElementById("modal-1-content").insertAdjacentHTML("beforeend",
+				`<table id="${option.wordMode}-ranking-table" class="ranking" name="${option.wordMode}">
+				<tbody>
+						<td>順位</td>
+						<td>名前</td>
+						<td>タイム</td>
+						<td>打/秒</td>
+						<td>ミス数</td>
+				</tbody>
+			</table>`)
+				rankingDisplay[option.wordMode] = Object.values(rankingData.val())
+				rankingDisplay[option.wordMode] = rankingDisplay[option.wordMode].sort(function(a, b) {
 					return (a.clearTime < b.clearTime) ? -1 : 1;  //オブジェクトの昇順ソート
 				  });
 				  document.getElementById("event-name").textContent = document.querySelector("#word-mode [selected]").textContent
-				  for(let i=0;i<this.timeRanking.length;i++){
-					this.addRankingTable(this.timeRanking[i],i)
+				  for(let i=0;i<this[option.wordMode].length;i++){
+					this.addRankingTable(this[option.wordMode][i],i)
 				}
 			})
 	
@@ -24,15 +32,15 @@ class RankingDisplay{
 	}
 
 	rankingAdd(snapShot){
-		this.timeRanking.push(snapShot.val())
-		this.timeRanking = this.timeRanking.sort(function(a, b) {
+		this[option.wordMode].push(snapShot.val())
+		this[option.wordMode] = this[option.wordMode].sort(function(a, b) {
 			return (a.clearTime < b.clearTime) ? -1 : 1;  //オブジェクトの昇順ソート
 		  });
 	}
 
 	addRankingTable(data,i){
 
-		document.querySelector("#ranking-table tbody").insertAdjacentHTML("beforeend",
+		document.querySelector(`[name=${option.wordMode}] tbody`).insertAdjacentHTML("beforeend",
 		`<tr>
 			<td class="rank">${i+1}位</td>
 			<td class="name">${data.name}</td>

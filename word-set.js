@@ -64,5 +64,57 @@ class WordSet {
 		this.words = this.specialKeys.concat(this.normalKeys).concat(this.functionKeys)
 	}
 
+	notFunctionKey(){
+		this.ctrlKeys = [
+			"BS",
+			"Del",
+			"←",
+			"→",
+			"Home",
+			"End",
+		]
+		this.shiftKeys = [
+			"BS",
+			"Del",
+			"←",
+			"↓",
+			"↑",
+			"→",
+			"Home",
+			"End",
+		]
+		this.specialKeys = [
+			"BS",
+			"Del",
+			"←",
+			"↓",
+			"↑",
+			"→",
+			"Home",
+			"End",
+			"Enter"
+		]
+		this.ctrlAlphabetKeys = [
+			"A",
+			"C",
+			"H",
+			"V",
+			"X",
+			"Y",
+			"Z"
+		]
+		this.normalKeys = [
+			"Ctrl",
+			"Alt",
+			"Tab",
+			"PgUp",
+			"PgDown",
+			"Shift"
+		]
+		this.functionKeys= [
+		]
+		this.shiftKey = false
+		this.words = this.specialKeys.concat(this.normalKeys).concat(this.functionKeys)
+	}
 
 }

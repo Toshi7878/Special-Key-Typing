@@ -78,6 +78,14 @@ class Option {
 		document.getElementById("auto-submit").parentElement.classList.remove("d-none");
 	  }
 	  this.wordMode = event.target.selectedOptions[0].dataset.wordset
+	  const RANKING_TABLES = document.getElementsByClassName("ranking")
+	  for(let i=0;i<RANKING_TABLES.length;i++){
+		  if(RANKING_TABLES[i].name == this.wordMode){
+			RANKING_TABLES[i].classList.remove("d-none")
+		  }else{
+			RANKING_TABLES[i].classList.add("d-none")
+		  }
+	  }
 	  Reset(this.wordMode)
 	}
 
