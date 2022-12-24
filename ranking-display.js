@@ -52,6 +52,8 @@ class RankingDisplay{
 		</tr>`)
 
 	}
+
+
 }
 MicroModal.init();
 let rankingDisplay = new RankingDisplay()

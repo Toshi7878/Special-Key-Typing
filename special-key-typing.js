@@ -57,6 +57,7 @@ class KeyType {
         document.getElementById("time").textContent = this.clearTime;
 
         if(option.wordMode != "free") {
+					const twitter = this.twitterLink()
           firebase.database().ref('ranking/'+ option.wordMode +'/'+myID).once('value').then(userData => {
             const MAX_RECODE = userData.val()
             if(MAX_RECODE){
@@ -72,19 +73,19 @@ class KeyType {
 							document.getElementById("time").parentElement.classList.add("text-success")
 							if(document.getElementById("auto-submit").checked){
 								document.getElementById("result").innerHTML = `お疲れ様でした。
-								<button id="submit-button" class="btn btn-warning" disabled>ランキングに登録しました</button>`
+								<button id="submit-button" class="btn btn-warning" disabled>ランキングに登録しました</button> ${twitter}`
 								keyType.sendRankingData()
 							}else{
 								document.getElementById("result").innerHTML = `お疲れ様でした。
-								<button id="submit-button" class="btn btn-warning">ランキングに登録</button>`
+								<button id="submit-button" class="btn btn-warning">ランキングに登録</button> ${twitter}`
 								document.getElementById("submit-button").addEventListener("click",keyType.sendRankingData.bind(keyType))
 							}
             }else{
-              document.getElementById("result").textContent = `お疲れ様でした。`
+              document.getElementById("result").innerHTML = `お疲れ様でした。 ${twitter}`
             }
             })
         }else{ 
-          document.getElementById("result").textContent = `お疲れ様でした。`
+          document.getElementById("result").innerHTML = `お疲れ様でした。`
         }
       }
         
@@ -131,6 +132,12 @@ class KeyType {
     });
   }
 
+	twitterLink(){
+		const link = 
+		encodeURI(`https://twitter.com/share?url=https://toshi7878.github.io/Special-Key-Typing\n&text=「${document.querySelector("#word-mode").selectedOptions[0].textContent}」 タイピング結果\nタイム:${this.clearTime} | ミス:${this.missCount} | 打/秒:${this.keySec}&hashtags=特殊キータイピング`)
+		return `<a class="twitter btn" 
+		href="${link}" target="_blank"><i class="fa-brands fa-square-twitter"></i>結果をツイートする</a>`
+	}
 
 }
 
