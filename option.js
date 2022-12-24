@@ -21,7 +21,7 @@ class Option {
 	  document.getElementById("key-type").checked = localStorage.getItem("key-type") == "true" ? true : false;
 	  document.getElementById("miss-type").checked = localStorage.getItem("miss-type") == "true" ? true : false;
 	  if(location.search.slice(1)){
-		const OPTIONS = document.getElementsByTagName("option")[0]
+		const OPTIONS = document.getElementsByTagName("option")
 		for(let i=0;i<OPTIONS.length;i++){
 			if(OPTIONS[i].dataset.wordset == location.search.slice(1)){
 				document.getElementById("word-mode").options[i].selected = true;
