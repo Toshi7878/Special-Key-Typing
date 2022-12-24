@@ -51,7 +51,7 @@ function getAllIndexeddbData() {
 		}
 	  }
 	  createWord = new CreateWord()
-	  createWord[document.querySelector("#word-mode [selected]").dataset.wordset]()
+	  createWord[document.querySelector("#word-mode").selectedOptions[0].dataset.wordset]()
 	  createWord.word()
 	};
   }
