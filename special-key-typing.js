@@ -135,7 +135,7 @@ class KeyType {
 	twitterLink(){
 		const link = 
 		encodeURI(`https://twitter.com/share?text=「${document.querySelector("#word-mode").selectedOptions[0].textContent}」 タイピング結果\nタイム:${this.clearTime} | ミス:${this.missCount} | 打/秒:${this.keySec}\n #特殊キータイピング \n https://toshi7878.github.io/Special-Key-Typing/`)
-		return `<a class="twitter btn" 
+		return `<a class="btn btn-outline-primary" 
 		href="${link}" target="_blank"><i class="fa-brands fa-square-twitter"></i>結果をツイートする</a>`
 	}
 
