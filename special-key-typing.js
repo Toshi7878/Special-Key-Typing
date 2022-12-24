@@ -64,7 +64,7 @@ class KeyType {
               document.getElementById("max-length").textContent = document.getElementById("length").textContent
               document.getElementById("max-miss").textContent = MAX_RECODE.miss
               document.getElementById("max-speed").textContent = MAX_RECODE.kps
-              document.getElementById("max-time").textContent = MAX_RECODE.clearTime
+              document.getElementById("max-time").textContent = MAX_RECODE.clearTime.toFixed(3)
               document.getElementById("ranking-data").classList.remove("invisible")
             }
             

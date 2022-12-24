@@ -41,6 +41,15 @@ function getAllIndexeddbData() {
   
 		}
 	  }
+	  for(let i=0;i<ALL_SELECT_BTN.length;i++){
+
+		const CHECKBOXS = ALL_SELECT_BTN[i].parentElement.querySelectorAll('[type="checkbox"]')
+		const SELECT_CHECKBOXS = ALL_SELECT_BTN[i].parentElement.querySelectorAll('[type="checkbox"]:checked')
+		const DISABLED_CHECKBOXS = ALL_SELECT_BTN[i].parentElement.querySelectorAll('[type="checkbox"]:disabled')
+		if(CHECKBOXS.length == SELECT_CHECKBOXS.length+DISABLED_CHECKBOXS.length){
+			ALL_SELECT_BTN[i].textContent = "すべて選択解除"
+		}
+	  }
 	  createWord = new CreateWord()
 	  createWord[document.querySelector("#word-mode [selected]").dataset.wordset]()
 	  createWord.word()

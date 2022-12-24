@@ -1,3 +1,6 @@
+const ALL_SELECT_BTN = document.getElementsByClassName("all-select")
+
+
 class Option {
 	constructor() {
 	  this.wordMode = "majorKeys"
@@ -17,7 +20,7 @@ class Option {
 	  document.getElementById("auto-submit").checked = localStorage.getItem("auto-submit") == "true" ? true : false;
 	  document.getElementById("key-type").checked = localStorage.getItem("key-type") == "true" ? true : false;
 	  document.getElementById("miss-type").checked = localStorage.getItem("miss-type") == "true" ? true : false;
-	}
+	  }
   
 	wordLengthUpdate(event) {
 	  sessionStorage.setItem(event.target.id, event.target.value)
@@ -35,12 +38,13 @@ class Option {
 	}
   
 	enableKeyUpdate(event) {
-		const OPTION_CHANGED = !event.target.dataset.defaltDisabled && event.target.checked || event.target.dataset.defaltDisabled && !event.target.checked; 
-		OPTION_CHANGED ? deleteIndexedDB(event.target.value) : putOptionSaveData(0, event.target.value);
+		const CHECKBOX = event.target ? event.target : event
+		const OPTION_CHANGED = !CHECKBOX.dataset.defaltDisabled && CHECKBOX.checked || CHECKBOX.dataset.defaltDisabled && !CHECKBOX.checked; 
+		OPTION_CHANGED ? deleteIndexedDB(CHECKBOX.value) : putOptionSaveData(0, CHECKBOX.value);
 
-	  if (event.target.value == "Ctrl") {
-		document.getElementById("ctrlAlphabetKeys").style.display = event.target.checked ? "" : "none";
-		document.querySelector("[value=Shift]").parentElement.style.display = event.target.checked ? "" : "none";
+	  if (CHECKBOX.value == "Ctrl") {
+		document.getElementById("ctrlAlphabetKeys").style.display = CHECKBOX.checked ? "" : "none";
+		document.querySelector("[value=Shift]").parentElement.style.display = CHECKBOX.checked ? "" : "none";
   
 	  }
 	  Reset(this.wordMode)
@@ -76,10 +80,34 @@ class Option {
 	  this.wordMode = event.target.selectedOptions[0].dataset.wordset
 	  Reset(this.wordMode)
 	}
+
+	allSelect(event){
+		const CHECKBOXS = event.target.parentElement.querySelectorAll("[type='checkbox']")
+
+		if(event.target.textContent == "すべて選択"){
+			for(let i=0;i<CHECKBOXS.length;i++){
+				if(CHECKBOXS[i].disabled != true){
+					CHECKBOXS[i].checked = true
+					this.enableKeyUpdate(CHECKBOXS[i])
+				}
+			}
+			event.target.textContent = "すべて選択解除"
+		}else{
+			for(let i=0;i<CHECKBOXS.length;i++){
+				if(CHECKBOXS[i].disabled != true){
+					CHECKBOXS[i].checked = false
+					this.enableKeyUpdate(CHECKBOXS[i])
+				}
+			}
+			event.target.textContent = "すべて選択"
+		}
+		event.preventDefault();
+	}
   }
+
   Option.loadOption()
-  
   let option = new Option()
+
   document.getElementById("keyboard-layout").addEventListener("change", option.keyboardUpdate.bind(option))
   document.getElementById("word-length").addEventListener("change", option.wordLengthUpdate.bind(option))
   document.getElementById("special-keys").addEventListener("change", option.enableKeyUpdate.bind(option))
@@ -89,3 +117,7 @@ class Option {
   document.getElementById("ranking-name").addEventListener("change", option.rankingNameUpdate)
   document.getElementById("auto-submit").addEventListener("change",option.setLocalStorageCheckbox)
   document.getElementById("key-se").addEventListener("change",option.setLocalStorageCheckbox)
+  
+  for(let i=0;i<ALL_SELECT_BTN.length;i++){
+	ALL_SELECT_BTN[i].addEventListener("click",option.allSelect.bind(option))
+  }

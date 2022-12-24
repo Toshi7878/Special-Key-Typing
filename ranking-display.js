@@ -36,7 +36,7 @@ class RankingDisplay{
 		`<tr>
 			<td class="rank">${i+1}位</td>
 			<td class="name">${data.name}</td>
-			<td class="time">${data.clearTime}秒</td>
+			<td class="time">${data.clearTime.toFixed(3)}秒</td>
 			<td class="kps">${data.kps}</td>
 			<td class="miss">${data.miss}</td>
 		</tr>`)
