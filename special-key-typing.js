@@ -69,7 +69,7 @@ class Option {
       document.getElementById("ranking-button").classList.remove("d-none");
       document.getElementById("ranking-name").classList.remove("d-none");
     }
-    this.wordMode = event.target.value
+    this.wordMode = event.target.selectedOptions[0].dataset.wordset
     Reset(this.wordMode)
   }
 }
@@ -238,11 +238,25 @@ class KeyType {
       document.getElementById("speed").textContent = this.keySec
       if (createWord.displayWords.length == 0){
         this.clearTime = ((new Date().getTime() - this.startTime) / 1000)
-        if(this.wordMode != "free") {
+        document.getElementById("time").parentElement.classList.remove("invisible")
+        document.getElementById("time").textContent = this.clearTime;
+
+        if(option.wordMode != "free") {
           firebase.database().ref('ranking/'+ option.wordMode +'/'+myID).once('value').then(userData => {
+            const MAX_RECODE = userData.val()
+            if(MAX_RECODE){
+              document.getElementById("max-key").textContent = document.getElementById("key").textContent
+              document.getElementById("max-length").textContent = document.getElementById("length").textContent
+              document.getElementById("max-miss").textContent = MAX_RECODE.miss
+              document.getElementById("max-speed").textContent = MAX_RECODE.kps
+              document.getElementById("max-time").textContent = MAX_RECODE.clearTime
+              document.getElementById("ranking-data").classList.remove("invisible")
+            }
+            
             if(!userData.val() || userData.val().clearTime > keyType.clearTime){
               document.getElementById("result").innerHTML = `お疲れ様でした。
               <button id="submit-button" class="btn btn-warning">ランキングに登録</button>`
+              document.getElementById("time").classList.add("text-success")
               document.getElementById("submit-button").addEventListener("click",keyType.sendRankingData.bind(keyType))
             }else{
               document.getElementById("result").textContent = `お疲れ様でした。`
@@ -312,6 +326,8 @@ retry.addEventListener('click', e => {
 
 
 function Reset(wordMode) {
+  document.getElementById("ranking-data").classList.add("invisible")
+  document.getElementById("time").parentElement.classList.add("invisible")
   createWord = new CreateWord()
   createWord[wordMode]()
   createWord.word()
